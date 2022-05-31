@@ -1,9 +1,16 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/project").then(() => {
-    console.log("MongoDB Is Connected")
-}).catch(() => {
-    console.log("MongoDB Is Not Connected")
-})
+mongoose
+  .connect(
+    "mongodb+srv://Contrivertech:CT%40123@contrivertech.rafja54.mongodb.net/?retryWrites=true&w=majority",{
+        useNewUrlParser : true
+    }
+  )
+  .then(() => {
+    console.log("MongoDB Is Connected");
+  })
+  .catch((errr) => {
+    console.log("MongoDB Is Not Connected",errr);
+  });
 
-module.exports = mongoose
+module.exports = mongoose;

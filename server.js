@@ -10,6 +10,9 @@ const PORT = process.env.PORT || 3000 ;
 // database connection 
 require("./config/db");
 
+//usaer route path
+const userRoutes = require("./Router/userRoutes");
+app.use("/api", userRoutes);
 
 // projectlead path 
 const ProjectLead = require("./Router/ProjectLeadRoute")
