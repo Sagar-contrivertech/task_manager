@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 mongoose
   .connect(
-    "mongodb+srv://Contrivertech:CT%40123@contrivertech.rafja54.mongodb.net/?retryWrites=true&w=majority",{
+    "mongodb+srv://Contrivertech:CT123@contrivertech.rafja54.mongodb.net/?retryWrites=true&w=majority",{
         useNewUrlParser : true
     }
   )
