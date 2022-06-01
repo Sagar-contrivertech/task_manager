@@ -19,6 +19,7 @@ exports.isAuthenticated = async (req, res, next) => {
 }
 
 exports.authorizeRoles = (...roles) => {
+    console.log(roles);
     return async (req, res, next) => {
         if (!roles.includes(req.user.role)) {
             console.log(req.user.role, 'roles');
