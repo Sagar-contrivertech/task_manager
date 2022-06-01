@@ -4,8 +4,7 @@ const Income = require("../model/Income")
 
 exports.RegisterIncome = async (req, res) => {
     try {
-        const {IncomeName , IncomeRef , IncomeDate , IncomeTotal , IncomeAmount , TotalAmount} = req.body;
-
+        const {IncomeName , IncomeRef , IncomeDate , IncomeTotal , IncomeAmount , TotalAmount } = req.body;
         
         const Incomes = await Income.create({
             IncomeName : IncomeName , IncomeRef : IncomeRef , IncomeDate : IncomeDate , IncomeTotal : IncomeTotal , 
@@ -17,14 +16,29 @@ exports.RegisterIncome = async (req, res) => {
             return
         }
         
-        // const Incomefind = await Income.find();
-        // console.log(Incomefind)
+        const Incomefind = await Income.find();
+        console.log(Incomefind)
+        let total = 0;
+        Incomefind.map(ele => {
+            console.log(ele.IncomeAmount)
+            total = total + ele.IncomeAmount
+        })
 
-        // if (Incomes) {
+        // Incomefind.map(ele => {
+        //     ele.TotalAmount = total
+        // })
+        // Income.TotalAmount + toa
+        console.log("total is " + total)
 
-        //     res.status(200).json({error : "Congratulation Income Is Created " , Incomes})
-        //     return
-        // }
+        if (Incomes) {
+            const newval = {$set: {TotalAmount: total} };
+            const update  = await Income.updateMany({}, newval)
+
+            await Incomes.save()
+            // res.status(200).json({error : "Congratulation Income Is Created " , Incomes})
+            res.status(200).json({error : "Congratulation Income Is Created " , update , Incomes})
+            return
+        }
 
     } catch (error) {
         res.status(400).json({error : "OOps Income Is Not Registered"})
