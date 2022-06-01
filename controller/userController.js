@@ -81,19 +81,24 @@ exports.updateUserById = async (req, res) => {
       res.status(400).json({ message: "User not found !" });
       return;
     }
-    const salt = await bcrypt.genSalt(10);
-    password = await bcrypt.hash(password, salt);
     const updateUsers = await user.findByIdAndUpdate(
       req.params.id,
       {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: password,
         role: role,
       },
       { new: true }
     );
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(password, salt);
+      updateUsers.password = passwordHash;
+      await user.findByIdAndUpdate(req.params.id, {
+        password: passwordHash,
+      });
+    }
     if (!updateUsers) {
       res.status(400).json({ message: "User not updated !" });
       return;
@@ -104,6 +109,7 @@ exports.updateUserById = async (req, res) => {
     }
   } catch (error) {
     res.status(400).json({ message: "Something Went Wrong !", error });
+    console.log(error);
   }
 };
 
@@ -131,7 +137,7 @@ exports.deleteUserById = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const users = await user.findOne({email : email});
+    const users = await user.findOne({ email: email });
     if (!users) {
       res.status(400).json({ message: "User not found !" });
       return;
@@ -142,7 +148,6 @@ exports.login = async (req, res) => {
       return;
     }
     if (validpassword) {
-
       const token = jwt.sign({ id: users.id }, process.env.tokenKey, {
         expiresIn: "7d",
       });
@@ -150,7 +155,8 @@ exports.login = async (req, res) => {
 
       res.status(200).json({
         message: "User Authenticated",
-        users  , token
+        users,
+        token,
       });
       return;
     }
