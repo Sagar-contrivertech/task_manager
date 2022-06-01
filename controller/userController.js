@@ -131,26 +131,31 @@ exports.deleteUserById = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const users = await user.findOne(email);
+    const users = await user.findOne({email : email});
     if (!users) {
       res.status(400).json({ message: "User not found !" });
       return;
     }
-    const validpassword = await bcrypt.compare(password, users.pasword);
+    const validpassword = await bcrypt.compare(password, users.password);
     if (!validpassword) {
       res.status(400).json({ message: "password wrong" });
       return;
     }
     if (validpassword) {
+
+      const token = jwt.sign({ id: users.id }, process.env.tokenKey, {
+        expiresIn: "7d",
+      });
+      // users.token = token;
+
       res.status(200).json({
         message: "User Authenticated",
-        user: user.email,
-        role: role,
-        token: token,
+        users  , token
       });
       return;
     }
   } catch (error) {
+    console.log(error);
     res.status(400).json({ message: "Something went wrong", error });
   }
 };
