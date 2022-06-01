@@ -22,6 +22,12 @@ app.use("/Lead" , ProjectLead)
 const ExpensesTrack = require("./Router/ExpenseRoute")
 app.use("/Expenses" , ExpensesTrack)
 
+// Income Route 
+const IncomeTrack = require("./Router/IncomeRoute")
+app.use("/Incomes" , IncomeTrack)
+
+
+
 // app.get("/lead" , (req , res) => {
 //     res.json({message : "Hello This is Lead Api Get"});
 // })
