@@ -5,11 +5,12 @@ const IncomeModal = require('../model/Income')
 exports.RegisterExpense = async (req, res) => {
     try {
         const { ExpenseName , ExpenseDate , ExpenseBy , EntryDate , Amount } = req.body;
-
+        let TotalIncome = 0;
         const Expenses = await ExpenseTrack.create({
             ExpenseName : ExpenseName , ExpenseDate : ExpenseDate , ExpenseBy : ExpenseBy , EntryDate : EntryDate ,
              Amount : Amount
         });
+
 
         if (!Expenses) {
             res.status(400).json({error : 'Expense Is Not Added In Database try'})
@@ -20,8 +21,19 @@ exports.RegisterExpense = async (req, res) => {
             // calling income controller
             const Income = await IncomeModal.find();
             console.log(Income)
-            // await Expenses.save()
-            // res.status(400).json({Message : 'Expense Is Added ' , Expenses})
+            TotalIncome = Income[Income.length-1].TotalAmount;
+            console.log(TotalIncome)
+
+            TotalIncome -= req.body.Amount;
+            console.log(TotalIncome)
+            const updateincome = await IncomeModal.updateMany({} , {$set : {TotalAmount : TotalIncome}});
+
+            if (!updateincome) {
+                res.status(400).json({message : "Yes income modal is updated"})
+            }
+            await Expenses.save()
+
+            res.status(400).json({Message : 'Expense Is Added ' , Expenses})
             return
         }
 
