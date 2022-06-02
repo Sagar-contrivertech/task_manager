@@ -1,0 +1,4 @@
+altas name : contrivertech
+password: info123
+
+url = mongodb+srv://contrivertech:info123@cluster0.neduui0.mongodb.net/?retryWrites=true&w=majority

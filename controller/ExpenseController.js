@@ -4,11 +4,11 @@ const IncomeModal = require('../model/Income')
 
 exports.RegisterExpense = async (req, res) => {
     try {
-        const { ExpenseName , ExpenseDate , ExpenseBy , EntryDate , Amount } = req.body;
+        const { ExpenseName , ExpenseDate , ExpenseBy , EntryDate , Amount ,typeofExp} = req.body;
         let TotalIncome = 0;
         const Expenses = await ExpenseTrack.create({
             ExpenseName : ExpenseName , ExpenseDate : ExpenseDate , ExpenseBy : ExpenseBy , EntryDate : EntryDate ,
-             Amount : Amount
+             Amount : Amount,typeofExp
         });
 
 

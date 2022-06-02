@@ -1,5 +1,5 @@
 const express = require("express");
-const {isAuthenticated} = require("../middleware/Auth");
+const { isAuthenticated, authorizeRoles } = require("../middleware/Auth");
 
 const router = express.Router();
 
@@ -7,13 +7,13 @@ const userController = require("../controller/userController");
 
 router.post("/signup", userController.registerUser);
 
-router.get("/getuser",isAuthenticated, userController.getUser);
+router.get("/getuser", isAuthenticated, authorizeRoles('read'), userController.getUser);
 
-router.get("/getbyid/:id",isAuthenticated, userController.getUserById);
+router.get("/getbyid/:id", isAuthenticated, authorizeRoles('read'), userController.getUserById);
 
-router.put("/updatebyid/:id",isAuthenticated, userController.updateUserById);
+router.put("/updatebyid/:id", isAuthenticated, userController.updateUserById);
 
-router.delete("/deletebyid/:id",isAuthenticated, userController.deleteUserById);
+router.delete("/deletebyid/:id", isAuthenticated, userController.deleteUserById);
 
 router.post("/login", userController.login);
 

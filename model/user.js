@@ -1,23 +1,27 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  firstName: { 
-    type: String 
+  firstName: {
+    type: String
   },
-  lastName: { 
-    type: String 
+  lastName: {
+    type: String
   },
-  email: { 
-    type: String 
+  email: {
+    type: String
   },
-  password: { 
+  password: {
     type: String,
-    select : false,
+  
   },
-  role: { 
-    type: String ,
-    default : 'admin'
+  role: {
+    type: String,
+    default: 'admin'
   },
+  Permissions: {
+    type: String,
+    default: 'read'
+  }
   // token: { type: String },
 });
 

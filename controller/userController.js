@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 exports.registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, role } = req.body;
+    const { firstName, lastName, email, password, role, Permissions } = req.body;
     const findUsers = await user.findOne({ email: req.body.email });
     if (findUsers) {
       res
@@ -19,6 +19,7 @@ exports.registerUser = async (req, res) => {
       email,
       password,
       role,
+      Permissions
     });
     const salt = await bcrypt.genSalt(10);
     users.password = await bcrypt.hash(users.password, salt);
@@ -32,7 +33,7 @@ exports.registerUser = async (req, res) => {
     }
     if (users) {
       await users.save();
-      res.status(200).json({ message: "User Registered !", users });
+      res.status(200).json({ message: "User Registered !", users, token });
       return;
     }
   } catch (error) {
@@ -75,7 +76,7 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUserById = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, role } = req.body;
+    const { firstName, lastName, email, password, role,Permissions } = req.body;
     const users = await user.findById(req.params.id);
     if (!users) {
       res.status(400).json({ message: "User not found !" });
@@ -88,6 +89,7 @@ exports.updateUserById = async (req, res) => {
         lastName: lastName,
         email: email,
         role: role,
+        Permissions:Permissions
       },
       { new: true }
     );
@@ -137,7 +139,8 @@ exports.deleteUserById = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const users = await user.findOne({ email: email });
+    const users = await user.findOne({ email: req.body.email });
+    console.log(users)
     if (!users) {
       res.status(400).json({ message: "User not found !" });
       return;
