@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const employeeModel = new mongoose.Schema({
   employeeName: {
     type: mongoose.Schema.ObjectId,
-    ref : "User",
+    ref: "User",
     required: true,
   },
   salary: {
@@ -16,7 +16,7 @@ const employeeModel = new mongoose.Schema({
   },
   joiningDate: {
     type: Date,
-    default : new Date(),
+    default: new Date(),
     required: true,
   },
   lastDate: {
@@ -25,6 +25,20 @@ const employeeModel = new mongoose.Schema({
   documents: {
     type: String,
   },
+  //lisit of holidays
+  hoildays: {
+    paidLeaves: {
+      type: Number,
+      
+    },
+    unPaidLeaves: {
+      type: Number,
+      
+    },
+    sickleave: {
+      
+    },
+  }
 });
 
 module.exports = mongoose.model("Employee", employeeModel);

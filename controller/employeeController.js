@@ -1,5 +1,7 @@
 const express = require("express");
 const employee = require("../model/employee");
+const Leaves = require('../model/leaves')
+
 
 exports.employeeRegister = async (req, res) => {
   try {
@@ -17,13 +19,13 @@ exports.employeeRegister = async (req, res) => {
       return;
     }
     if (employeeReg) {
-      employeeReg.save();
+      await employeeReg.save();
       res.status(200).json({ message: "Employee Registeren", employeeReg });
       return;
     }
   } catch (error) {
     console.log(error);
-    res.status(400).json({ message: "Something went wrong !" }, error);
+    res.status(400).json({ message: "Something went wrong !", error });
   }
 };
 
@@ -103,3 +105,39 @@ exports.deleteById = async (res, req) => {
     res.status(400).json({ message: "Something Went Wrong !", error });
   }
 };
+
+exports.addleaves = async (req, res) => {
+  try {
+    const LeavesData = await Leaves.create({
+      name: req.body.name,
+      paidLeaves: req.body.paidLeaves,
+      unPaidLeaves: req.body.unPaidLeaves,
+      sickleave: req.body.sickleave
+    })
+    await LeavesData.save()
+    let id = LeavesData.name
+    console.log(LeavesData, 'jk')
+    if (LeavesData.name) {
+      let ct = await employee.updateOne({ id }, {
+        $push: {
+          "hoildays": {
+            paidLeaves: LeavesData.paidLeaves,
+            unPaidLeaves: LeavesData.unPaidLeaves,
+            sickleave: LeavesData.sickleave,
+            leaves: LeavesData._id
+          }
+        }
+      }, {
+        new: true
+      })
+      console.log(ct)
+
+      res.status(200).json({ message: "leaves for employee added", LeavesData })
+
+    }
+
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({ message: "someting went wrong !", err })
+  }
+}
