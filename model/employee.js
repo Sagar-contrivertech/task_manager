@@ -36,7 +36,7 @@ const employeeModel = new mongoose.Schema({
       
     },
     sickleave: {
-      
+      type : Number
     },
   }
 });

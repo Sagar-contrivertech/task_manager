@@ -24,7 +24,7 @@ const Sprint = mongoose.Schema({
     },
     task: {
         name: {
-            type: string,
+            type: String,
         },
         startDate: {
             type: String,
