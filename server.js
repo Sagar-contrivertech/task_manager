@@ -34,6 +34,10 @@ app.use("/api", EmployeeRoute);
 const HrmRouter = require("./Router/hrmRoutes");
 app.use("/api", HrmRouter);
 
+// status route
+const statusRouter = require("./Router/statusRoute");
+app.use("/api", statusRouter);
+
 // app.get("/lead" , (req , res) => {
 //     res.json({message : "Hello This is Lead Api Get"});
 // })
