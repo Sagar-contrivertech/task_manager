@@ -37,6 +37,9 @@ app.use("/api", HrmRouter);
 // status route
 const statusRouter = require("./Router/statusRoute");
 app.use("/api", statusRouter);
+// Sprint path route
+const SprintRouter = require("./Router/SprintRoute");
+app.use("/sprint", SprintRouter);
 
 // app.get("/lead" , (req , res) => {
 //     res.json({message : "Hello This is Lead Api Get"});
