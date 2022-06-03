@@ -34,6 +34,10 @@ app.use("/api", EmployeeRoute);
 const HrmRouter = require("./Router/hrmRoutes");
 app.use("/api", HrmRouter);
 
+// Sprint path route
+const SprintRouter = require("./Router/SprintRoute");
+app.use("/sprint", SprintRouter);
+
 // app.get("/lead" , (req , res) => {
 //     res.json({message : "Hello This is Lead Api Get"});
 // })
