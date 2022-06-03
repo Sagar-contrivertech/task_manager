@@ -1,7 +1,6 @@
 const express = require("express");
 const employee = require("../model/employee");
-const Leaves = require('../model/leaves')
-
+const Leaves = require("../model/leaves");
 
 exports.employeeRegister = async (req, res) => {
   try {
@@ -31,10 +30,7 @@ exports.employeeRegister = async (req, res) => {
 
 exports.getEmploy = async (req, res) => {
   try {
-    const employeeGet = await employee
-      .find()
-      .populate("employeeName")
-      .exec();
+    const employeeGet = await employee.find().populate("employeeName").exec();
     if (!employeeGet) {
       res.status(400).json({ message: "Try again !" });
       return;
@@ -70,6 +66,8 @@ exports.getEmployById = async (res, req) => {
 
 exports.updateById = async (req, res) => {
   try {
+    const { employeeName, salary, designation, joiningDate, documents } =
+      req.body;
     const employeebyIdUp = await employee.findByIdAndUpdate(req.params.id, {
       employeeName,
       salary,
@@ -82,6 +80,7 @@ exports.updateById = async (req, res) => {
       return;
     }
     if (employeebyIdUp) {
+      await employeebyIdUp.save();
       res.status(200).json({ message: "Employee Updated !", employeebyIdUp });
       return;
     }
@@ -112,32 +111,36 @@ exports.addleaves = async (req, res) => {
       name: req.body.name,
       paidLeaves: req.body.paidLeaves,
       unPaidLeaves: req.body.unPaidLeaves,
-      sickleave: req.body.sickleave
-    })
-    await LeavesData.save()
-    let id = LeavesData.name
-    console.log(LeavesData, 'jk')
+      sickleave: req.body.sickleave,
+    });
+    await LeavesData.save();
+    let id = LeavesData.name;
+    console.log(LeavesData, "jk");
     if (LeavesData.name) {
-      let ct = await employee.updateOne({ id }, {
-        $push: {
-          "hoildays": {
-            paidLeaves: LeavesData.paidLeaves,
-            unPaidLeaves: LeavesData.unPaidLeaves,
-            sickleave: LeavesData.sickleave,
-            leaves: LeavesData._id
-          }
+      let ct = await employee.updateOne(
+        { id },
+        {
+          $push: {
+            hoildays: {
+              paidLeaves: LeavesData.paidLeaves,
+              unPaidLeaves: LeavesData.unPaidLeaves,
+              sickleave: LeavesData.sickleave,
+              leaves: LeavesData._id,
+            },
+          },
+        },
+        {
+          new: true,
         }
-      }, {
-        new: true
-      })
-      console.log(ct)
+      );
+      console.log(ct);
 
-      res.status(200).json({ message: "leaves for employee added", LeavesData })
-
+      res
+        .status(200)
+        .json({ message: "leaves for employee added", LeavesData });
     }
-
   } catch (err) {
-    console.log(err)
-    res.status(400).json({ message: "someting went wrong !", err })
+    console.log(err);
+    res.status(400).json({ message: "someting went wrong !", err });
   }
-}
+};
