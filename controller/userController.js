@@ -2,6 +2,7 @@ const express = require("express");
 const user = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Leaves = require("../model/leaves")
 
 exports.registerUser = async (req, res) => {
   try {
@@ -167,5 +168,48 @@ exports.login = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "Something went wrong", error });
+  }
+};
+
+
+// add leaves is 
+exports.addleaves = async (req, res) => {
+  try {
+    const LeavesData = await Leaves.create({
+      name: req.body.name,
+      paidLeaves: req.body.paidLeaves,
+      unPaidLeaves: req.body.unPaidLeaves,
+      sickleave: req.body.sickleave,
+    });
+    await LeavesData.save();
+    let id = LeavesData.name;
+    console.log(LeavesData, "jk");
+    if (LeavesData.name) {
+
+      let ct = await user.findByIdAndUpdate(
+        id,
+        {
+          $push: {
+            "hoildays": {
+              paidLeaves: LeavesData.paidLeaves,
+              unPaidLeaves: LeavesData.unPaidLeaves,
+              sickleave: LeavesData.sickleave,
+              leaves: LeavesData._id,
+            },
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      console.log(ct);
+
+      res
+        .status(200)
+        .json({ message: "leaves for employee added", LeavesData });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: "someting went wrong !", err });
   }
 };

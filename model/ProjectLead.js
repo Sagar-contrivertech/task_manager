@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const ProjectLead = mongoose.Schema({
+    User : {
+        type : mongoose.Schema.ObjectId,
+        ref : "User"
+    },
     ProjectName: {
         type: String,
         required: true

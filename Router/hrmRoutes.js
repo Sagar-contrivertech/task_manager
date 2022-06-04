@@ -4,7 +4,7 @@ const { isAuthenticated, authorizeRoles } = require("../middleware/Auth");
 
 const router = express.Router();
 
-router.post("/hrmcreate", isAuthenticated, hrmController.hrmReg);
+router.post("/hrmcreate", hrmController.hrmReg);
 
 router.get("/hrmget", isAuthenticated, hrmController.hrmGet);
 
