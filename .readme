@@ -3,7 +3,5 @@ password: info123
 
 url = mongodb+srv://contrivertech:info123@cluster0.neduui0.mongodb.net/?retryWrites=true&w=majority
 
-
-
 todo 
-make a leave request api 
+make a leave request api This Will Handle From Frontend

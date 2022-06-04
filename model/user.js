@@ -12,11 +12,43 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-  
+  },
+  salary: {
+    type: Number,
+  },
+  designation: {
+    type: String,
+  },
+  joiningDate: {
+    type: Date,
+    default: new Date(),
+  },
+  lastDate: {
+    type: Date,
+  },
+  documents: {
+    type: String,
+  },
+  //lisit of holidays
+  hoildays: {
+    paidLeaves: {
+      type: Number,
+      
+    },
+    unPaidLeaves: {
+      type: Number,
+      
+    },
+    sickleave: {
+      type : Number
+    },
+  },
+  ClientLocation : {
+    type : String
   },
   role: {
     type: String,
-    default: 'admin'
+    default: 'Employee'
   },
   Permissions: {
     type: String,
