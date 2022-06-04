@@ -117,6 +117,7 @@ exports.addleaves = async (req, res) => {
     let id = LeavesData.name;
     console.log(LeavesData, "jk");
     if (LeavesData.name) {
+
       let ct = await employee.updateOne(
         { id },
         {
@@ -144,3 +145,18 @@ exports.addleaves = async (req, res) => {
     res.status(400).json({ message: "someting went wrong !", err });
   }
 };
+
+
+//leave applications 
+
+
+// exports.askleaves = async (req, res) => {
+//   try {
+//     const leavesdata = await employee.findById(req.params.id, {
+//       holid
+//     })
+//   } catch (err) {
+//     console.log(err)
+//     res.status(500).json({ message: "something went wrong" })
+//   }
+// }

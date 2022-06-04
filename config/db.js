@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://contrivertech:info123@cluster0.neduui0.mongodb.net/?retryWrites=true&w=majority").then(() => {
+mongoose.connect('mongodb://localhost:27017/Shop').then(() => {
     console.log("MongoDB Is Connected");
   }).catch((errr) => {
     console.log("MongoDB Is Not Connected",errr);

@@ -64,7 +64,15 @@ exports.getHrmId = async (req, res) => {
 
 exports.updateHrm = async (req, res) => {
   try {
-    const hrmUpdate = hrm.findByIdAndUpdate(req.params.id,{
+    const {
+      name,
+      salaryOfMOnth,
+      holiday,
+      monthWorked,
+      workedDays,
+      halfDays,
+     } = req.body
+    const hrmUpdate = hrm.findByIdAndUpdate(req.params.id, {
       name,
       salaryOfMOnth,
       holiday,

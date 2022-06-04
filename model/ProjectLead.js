@@ -1,33 +1,37 @@
 const mongoose = require("mongoose");
 
 const ProjectLead = mongoose.Schema({
-    ProjectName : {
-        type : String,
+    ProjectName: {
+        type: String,
         required: true
     },
-    LeadName : {
-        type : String,
-        required : true
+    LeadName: {
+        type: String,
+        required: true
     },
-    Budget : {
-        type : Number,
-        required : true
+    Budget: {
+        type: Number,
+        required: true
     },
-    ProposalSend : {
-        type : Boolean,
-        required : true
+    ProposalSend: {
+        type: Boolean,
+        required: true
     },
-    LeadFrom : {
-        type : String,
-        required : true
+    status: {
+        type: String,
+        require: true
     },
-    DatePSend : {
-        type : String,
+    LeadFrom: {
+        type: String,
+        required: true
     },
-    LeadDate : {
-        type : String,
-        required : true
+    DatePSend: {
+        type: String,
+    },
+    LeadDate: {
+        type: String,
+        required: true
     }
 })
 
-module.exports = mongoose.model("ProjectLead" , ProjectLead)
+module.exports = mongoose.model("ProjectLead", ProjectLead)

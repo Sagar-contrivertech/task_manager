@@ -4,12 +4,12 @@ const status = new mongoose.Schema({
   userName: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
-    required: true,
+    // required: true,
   },
   EmployeeName : {
     type: mongoose.Schema.ObjectId,
     ref: "Employee",
-    required: true,
+    // required: true,
   },
   monthOfWork: {
     type: String,
@@ -32,6 +32,8 @@ const status = new mongoose.Schema({
   holidays: {
     type: Number,
   },
+},{
+  timestamps: true
 });
 
 module.exports = mongoose.model("Status", status);

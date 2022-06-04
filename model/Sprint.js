@@ -9,7 +9,7 @@ const Sprint = mongoose.Schema({
     Project: {
         type: mongoose.Schema.ObjectId,
         ref: "ProjectLead",
-        required: true
+        // required: true
     },
     StartDate: {
         type: String,

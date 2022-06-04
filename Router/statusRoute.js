@@ -4,13 +4,13 @@ const { isAuthenticated, authorizeRoles } = require("../middleware/Auth");
 
 const router = express.Router();
 
-router.post("/statusset",isAuthenticated, statusController.setStatus);
+router.post("/statusset", statusController.setStatus);
 
 router.get("/statusget",isAuthenticated, statusController.getStatus);
 
 router.get("/statusget/:id",isAuthenticated, statusController.getByIdStatus);
 
-router.post("/statusupdate/:id",isAuthenticated, statusController.updateStatus);
+router.put("/statusupdate/:id", statusController.updateStatus);
 
 router.delete("/statusdelete/:id",isAuthenticated, statusController.deleteStatus);
 

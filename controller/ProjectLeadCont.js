@@ -5,10 +5,11 @@ const ProjectLead = require("../model/ProjectLead")
 
 exports.RegisterProject = async (req , res) => {
     try {
-        const { ProjectName , LeadName , Budget , ProposalSend , LeadFrom , DatePSend , LeadDate } = req.body
+        const { ProjectName , LeadName , Budget , status,ProposalSend , LeadFrom , DatePSend , LeadDate } = req.body
 
         const Project = await ProjectLead.create({
             ProjectName : ProjectName , LeadName : LeadName , Budget : Budget , ProposalSend : ProposalSend , LeadFrom : LeadFrom , DatePSend : DatePSend , LeadDate : LeadDate 
+            ,status:status
         })
 
         if (!Project) {

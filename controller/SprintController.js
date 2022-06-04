@@ -1,25 +1,34 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const ProjectLead = require("../model/ProjectLead");
 const Sprint = require("../model/Sprint")
 const user = require("../model/user")
 
 exports.RegisterSprint = async (req, res) => {
     try {
-        const { User , Project , StartDate , EndDate , SprintStatus} = req.body;
-        const Sprints = await Sprint.create({
-            User : User , Project : Project , StartDate : StartDate , EndDate : EndDate , SprintStatus : SprintStatus
-        })
+        const { User, Project, StartDate, EndDate, SprintStatus } = req.body;
+        const findprojectstatus = await ProjectLead.findById(Project)
+        console.log(findprojectstatus)
 
-        if (!Sprints) {
-            res.status(400).json({error : "Sprint register is not possible"});
-            return
-        }
+        if (findprojectstatus.status === 'success') {
+            const Sprints = await Sprint.create({
+                User: User, Project: Project, StartDate: StartDate, EndDate: EndDate, SprintStatus: SprintStatus
+            })
 
-        if (Sprints) {
-            res.status(200).json({message : "Sprint is registered " , Sprints})
-            return
+            if (!Sprints) {
+                res.status(400).json({ error: "Sprint register is not possible" });
+                return
+            }
+
+            if (Sprints) {
+                res.status(200).json({ message: "Sprint is registered ", Sprints })
+                return
+            }
+            return;
         }
+        res.status(400).json({ message: "Lead is note converted into project " })
     } catch (error) {
-        res.staus(400).json({error : "Sprint register is not possible in catch"});
+        console.log(error)
+        res.status(400).json({ message: "Sprint register is not possible in catch" });
     }
 }
 
@@ -31,16 +40,16 @@ exports.GetSprint = async (req, res) => {
         const Sprints = await Sprint.find().populate("User").populate("Project");
 
         if (!Sprints) {
-            res.status(400).json({error : "Sprint Get is not possible"});
+            res.status(400).json({ error: "Sprint Get is not possible" });
             return
         }
 
         if (Sprints) {
-            res.status(200).json({message : "Sprint is get " , Sprints})
+            res.status(200).json({ message: "Sprint is get ", Sprints })
             return
         }
     } catch (error) {
-        res.staus(400).json({error : "Sprint Get is not possible in catch"});
+        res.staus(400).json({ error: "Sprint Get is not possible in catch" });
     }
 }
 
@@ -53,23 +62,23 @@ exports.GetUserSprint = async (req, res) => {
         const Sprints = await Sprint.findById(req.params.id).populate("User").populate("Project");
 
         if (!Sprints) {
-            res.status(400).json({error : "Sprint Get is not possible"});
+            res.status(400).json({ error: "Sprint Get is not possible" });
             return
         }
 
         if (Sprints) {
-            res.status(200).json({message : "Sprint is get with user " , Sprints})
+            res.status(200).json({ message: "Sprint is get with user ", Sprints })
             return
         }
     } catch (error) {
-        res.staus(400).json({error : "Sprint Get is not possible in catch"});
+        res.staus(400).json({ error: "Sprint Get is not possible in catch" });
     }
 }
 
 
 exports.UpdateUseidSprint = async (req, res) => {
     try {
-        const { User , Project , StartDate , EndDate , SprintStatus} = req.body;
+        const { User, Project, StartDate, EndDate, SprintStatus } = req.body;
 
         // const Sprints = await Sprint.findOne({User : req.params.id})
         const Sprints = await Sprint.findById(req.params.id)
@@ -77,24 +86,24 @@ exports.UpdateUseidSprint = async (req, res) => {
         console.log(Sprints)
 
         if (!Sprints) {
-            res.status(400).json({message : "Sprint With this user id is not in database"})
+            res.status(400).json({ message: "Sprint With this user id is not in database" })
             return
         }
 
         if (Sprints) {
 
-            const SprintsUser = await Sprint.findByIdAndUpdate(req.params.id , {
-                User : User, Project : Project, StartDate : StartDate , EndDate : EndDate , SprintStatus : SprintStatus
-            } , {new : true})
+            const SprintsUser = await Sprint.findByIdAndUpdate(req.params.id, {
+                User: User, Project: Project, StartDate: StartDate, EndDate: EndDate, SprintStatus: SprintStatus
+            }, { new: true })
 
-            
+
             if (!SprintsUser) {
-                res.status(200).json({message : "Sprint with this user id is is not added in another try"})
+                res.status(200).json({ message: "Sprint with this user id is is not added in another try" })
                 return
             }
 
             if (SprintsUser) {
-                res.status(200).json({message : "Sprint with this user id is possible" , SprintsUser})
+                res.status(200).json({ message: "Sprint with this user id is possible", SprintsUser })
                 return
             }
 
@@ -102,7 +111,7 @@ exports.UpdateUseidSprint = async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.status(400).json({message : "Sprint Update is not possible in catch"});
+        res.status(400).json({ message: "Sprint Update is not possible in catch" });
     }
 }
 
@@ -115,7 +124,7 @@ exports.DeleteSprint = async (req, res) => {
         console.log(Sprints)
 
         if (!Sprints) {
-            res.status(400).json({message : "Sprint With this user id is not for delete in database"})
+            res.status(400).json({ message: "Sprint With this user id is not for delete in database" })
             return
         }
 
@@ -123,20 +132,20 @@ exports.DeleteSprint = async (req, res) => {
 
             const SprintsUser = await Sprint.findByIdAndDelete(req.params.id)
 
-            
+
             if (!SprintsUser) {
-                res.status(200).json({message : "Sprint with this user id is is not for delete in another try"})
+                res.status(200).json({ message: "Sprint with this user id is is not for delete in another try" })
                 return
             }
 
             if (SprintsUser) {
-                res.status(200).json({message : "Sprint with this user id is possible for delete" , SprintsUser})
+                res.status(200).json({ message: "Sprint with this user id is possible for delete", SprintsUser })
                 return
             }
 
         }
     } catch (error) {
-        res.status(400).json({message : "Sprint Delete is not possible for delete in catch"});
+        res.status(400).json({ message: "Sprint Delete is not possible for delete in catch" });
     }
 }
 

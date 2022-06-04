@@ -3,7 +3,8 @@ const status = require("../model/status");
 exports.setStatus = async (req, res) => {
   try {
     const {
-      name,
+      userName,
+      EmployeeName,
       monthOfWork,
       clockIn,
       clockOut,
@@ -12,8 +13,11 @@ exports.setStatus = async (req, res) => {
       totalHours,
       holidays,
     } = req.body;
+    const dataIn = clockIn
+    console.log(dataIn)
     const statusSet = await status.create({
-      name,
+      userName,
+      EmployeeName,
       monthOfWork,
       clockIn,
       clockOut,
@@ -79,7 +83,7 @@ exports.getByIdStatus = async (req, res) => {
 exports.updateStatus = async (req, res) => {
   try {
     const {
-      name,
+      userName,
       monthOfWork,
       clockIn,
       clockOut,
@@ -88,8 +92,9 @@ exports.updateStatus = async (req, res) => {
       totalHours,
       holidays,
     } = req.body;
-    const statusUpdate = status.findByIdAndUpdate(req.params.id, {
-      name,
+    
+    const statusUpdate = await status.findByIdAndUpdate(req.params.id, {
+      userName,
       monthOfWork,
       clockIn,
       clockOut,
@@ -97,16 +102,32 @@ exports.updateStatus = async (req, res) => {
       regularizations,
       totalHours,
       holidays,
-    });
+    }, { new: true });
+
     if (!statusUpdate) {
       res.status(400).json({ message: "Try Again !" });
       return;
     }
+
+    let stored = statusUpdate.createdAt
+
+    let now = statusUpdate.updatedAt
+
+    const minutes = (new Date(now).getTime() - new Date(stored).getTime()) / 1000 / 60;
+
+    let count = Math.floor(minutes)
+    console.log(Math.floor(minutes));
+
     if (statusUpdate) {
-      res.status(200).json({ message: "Status Updated", statusUpdate });
+      const updatetotalhours = await status.findByIdAndUpdate(req.params.id, {
+        totalHours: count
+      }, { new: true })
+
+      res.status(200).json({ message: "Status Updated", updatetotalhours });
       return;
     }
   } catch (error) {
+    console.log(error)
     res.status(400).json({ message: "Something went Wrong !", error });
   }
 };
@@ -150,8 +171,8 @@ exports.clockOutStatus = async (req, res) => {
   try {
     const { clockOut } = req.body;
     const statusCLockOut = status.findByIdAndUpdate(req.params.id, {
-        clockOut,
-      });
+      clockOut,
+    });
     if (!statusCLockOut) {
       res.status(400).json({ message: "Try Again !" });
       return;
