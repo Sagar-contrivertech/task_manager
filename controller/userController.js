@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 exports.registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, role, Permissions } = req.body;
+    const { firstName, lastName, email, password, employeeName, salary, designation, joiningDate, documents,role, Permissions } = req.body;
     const findUsers = await user.findOne({ email: req.body.email });
     if (findUsers) {
       res
@@ -17,7 +17,7 @@ exports.registerUser = async (req, res) => {
       firstName,
       lastName,
       email,
-      password,
+      password,employeeName, salary, designation, joiningDate, documents,
       role,
       Permissions
     });
@@ -85,11 +85,12 @@ exports.updateUserById = async (req, res) => {
     const updateUsers = await user.findByIdAndUpdate(
       req.params.id,
       {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        role: role,
-        Permissions:Permissions
+        firstName,
+        lastName,
+        email,
+        employeeName, salary, designation, joiningDate, documents,
+        role,
+        Permissions
       },
       { new: true }
     );

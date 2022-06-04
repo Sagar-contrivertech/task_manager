@@ -1,6 +1,7 @@
 const express = require("express");
 const employee = require("../model/employee");
 const Leaves = require("../model/leaves");
+const user = require("../model/user");
 
 exports.employeeRegister = async (req, res) => {
   try {
@@ -118,7 +119,7 @@ exports.addleaves = async (req, res) => {
     console.log(LeavesData, "jk");
     if (LeavesData.name) {
 
-      let ct = await employee.updateOne(
+      let ct = await user.updateOne(
         { id },
         {
           $push: {
