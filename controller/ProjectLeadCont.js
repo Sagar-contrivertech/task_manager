@@ -5,10 +5,10 @@ const ProjectLead = require("../model/ProjectLead")
 
 exports.RegisterProject = async (req , res) => {
     try {
-        const { ProjectName , LeadName , Budget , status,ProposalSend , LeadFrom , DatePSend , LeadDate } = req.body
+        const {User , ProjectName , LeadName , Budget , status,ProposalSend , LeadFrom , DatePSend , LeadDate } = req.body
 
         const Project = await ProjectLead.create({
-            ProjectName : ProjectName , LeadName : LeadName , Budget : Budget , ProposalSend : ProposalSend , LeadFrom : LeadFrom , DatePSend : DatePSend , LeadDate : LeadDate 
+            User : User , ProjectName : ProjectName , LeadName : LeadName , Budget : Budget , ProposalSend : ProposalSend , LeadFrom : LeadFrom , DatePSend : DatePSend , LeadDate : LeadDate 
             ,status:status
         })
 
@@ -50,7 +50,7 @@ exports.GetAllProjectLead = async (req , res) => {
 exports.Updateproject = async (req , res) => {
     try {
 
-        const { ProjectName , LeadName , Budget , ProposalSend , LeadFrom , DatePSend , LeadDate } = req.body
+        const {User , ProjectName , LeadName , Budget , ProposalSend , LeadFrom , DatePSend , LeadDate } = req.body
 
         const ProjectId = await ProjectLead.findById(req.params.id);
         console.log(ProjectId);
@@ -60,7 +60,7 @@ exports.Updateproject = async (req , res) => {
 
         if (ProjectId) {
             const Project = await ProjectLead.findByIdAndUpdate(req.params.id , {
-                ProjectName : ProjectName , LeadName : LeadName , Budget : Budget , ProposalSend : ProposalSend , LeadFrom : LeadFrom , DatePSend : DatePSend , LeadDate : LeadDate
+                User : User ,ProjectName : ProjectName , LeadName : LeadName , Budget : Budget , ProposalSend : ProposalSend , LeadFrom : LeadFrom , DatePSend : DatePSend , LeadDate : LeadDate
             }, {new : true})
 
             if (!Project) {
