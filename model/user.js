@@ -16,9 +16,16 @@ const userSchema = new mongoose.Schema({
   salary: {
     type: Number,
   },
+  //chnage according to cludniary
   designation: {
-    type: String,
+    public_id: {
+      type: String
+    },
+    url: {
+      type: String
+    }
   },
+  //
   joiningDate: {
     type: Date,
     default: new Date(),
@@ -33,18 +40,18 @@ const userSchema = new mongoose.Schema({
   hoildays: {
     paidLeaves: {
       type: Number,
-      
+
     },
     unPaidLeaves: {
       type: Number,
-      
+
     },
     sickleave: {
-      type : Number
+      type: Number
     },
   },
-  ClientLocation : {
-    type : String
+  ClientLocation: {
+    type: String
   },
   role: {
     type: String,

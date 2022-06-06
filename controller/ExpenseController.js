@@ -2,6 +2,7 @@ const express = require("express")
 const ExpenseTrack = require("../model/Expence")
 const IncomeModal = require('../model/Income')
 
+//nneed to be integted here
 exports.RegisterExpense = async (req, res) => {
     try {
         const { ExpenseName , ExpenseDate , ExpenseBy , EntryDate , Amount ,typeofExp} = req.body;

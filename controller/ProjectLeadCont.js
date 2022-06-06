@@ -3,6 +3,8 @@ const express = require("express")
 const mongoose = require("mongoose")
 const ProjectLead = require("../model/ProjectLead")
 
+
+//mail 
 exports.RegisterProject = async (req , res) => {
     try {
         const {User , ProjectName , LeadName , Budget , status,ProposalSend , LeadFrom , DatePSend , LeadDate } = req.body

@@ -80,8 +80,13 @@ exports.getByIdStatus = async (req, res) => {
   }
 };
 
+
+// mail 
+//clock in and clockout
+
 exports.updateStatus = async (req, res) => {
   try {
+    
     const {
       userName,
       monthOfWork,
