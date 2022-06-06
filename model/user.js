@@ -37,17 +37,17 @@ const userSchema = new mongoose.Schema({
     },
   },
   //lisit of holidays
-  hoildays: {
-    paidLeaves: {
-      type: Number,
-    },
-    unPaidLeaves: {
-      type: Number,
-    },
-    sickleave: {
-      type: Number,
-    },
-  },
+  // hoildays: {
+  //   paidLeaves: {
+  //     type: Number,
+  //   },
+  //   unPaidLeaves: {
+  //     type: Number,
+  //   },
+  //   sickleave: {
+  //     type: Number,
+  //   },
+  // },
   ClientLocation: {
     type: String,
   },
