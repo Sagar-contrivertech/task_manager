@@ -1,6 +1,25 @@
 const express = require("express");
-const app = express();
+const cloudinary = require("cloudinary");
+
 require("dotenv").config();
+
+const app = express();
+
+
+const fileUpload = require('express-fileupload')
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }))
+app.use(fileUpload());
+
+// clouinary
+cloudinary.config({
+  cloud_name: "contriver-tech",
+  api_key: "876916662134773",
+  api_secret: "pKhzOgDmU6PeUFpW1jwE38HraA4",
+});
+
+//
 
 // initializing that this project send the json data
 app.use(express.json());

@@ -1,4 +1,5 @@
 const status = require("../model/status");
+const sendEmail = require("../middleware/sendmail");
 
 exports.setStatus = async (req, res) => {
   try {
@@ -13,8 +14,8 @@ exports.setStatus = async (req, res) => {
       totalHours,
       holidays,
     } = req.body;
-    const dataIn = clockIn
-    console.log(dataIn)
+    const dataIn = clockIn;
+    console.log(dataIn);
     const statusSet = await status.create({
       userName,
       EmployeeName,
@@ -44,7 +45,7 @@ exports.setStatus = async (req, res) => {
     }
   } catch (error) {
     res.status(400).json({ message: "Something went Wrong !", error });
-    console.log(error)
+    console.log(error);
   }
 };
 
@@ -80,13 +81,11 @@ exports.getByIdStatus = async (req, res) => {
   }
 };
 
-
-// mail 
+// mail
 //clock in and clockout
 
 exports.updateStatus = async (req, res) => {
   try {
-    
     const {
       userName,
       monthOfWork,
@@ -97,42 +96,55 @@ exports.updateStatus = async (req, res) => {
       totalHours,
       holidays,
     } = req.body;
-    
-    const statusUpdate = await status.findByIdAndUpdate(req.params.id, {
-      userName,
-      monthOfWork,
-      clockIn,
-      clockOut,
-      halfDays,
-      regularizations,
-      totalHours,
-      holidays,
-    }, { new: true });
+
+    const statusUpdate = await status.findByIdAndUpdate(
+      req.params.id,
+      {
+        userName,
+        monthOfWork,
+        clockIn,
+        clockOut,
+        halfDays,
+        regularizations,
+        totalHours,
+        holidays,
+      },
+      { new: true }
+    );
 
     if (!statusUpdate) {
       res.status(400).json({ message: "Try Again !" });
       return;
     }
 
-    let stored = statusUpdate.createdAt
+    let stored = statusUpdate.createdAt;
 
-    let now = statusUpdate.updatedAt
+    let now = statusUpdate.updatedAt;
 
-    const minutes = (new Date(now).getTime() - new Date(stored).getTime()) / 1000 / 60;
+    const minutes =
+      (new Date(now).getTime() - new Date(stored).getTime()) / 1000 / 60;
 
-    let count = Math.floor(minutes)
+    let count = Math.floor(minutes);
     console.log(Math.floor(minutes));
 
     if (statusUpdate) {
-      const updatetotalhours = await status.findByIdAndUpdate(req.params.id, {
-        totalHours: count
-      }, { new: true })
-
+      const updatetotalhours = await status.findByIdAndUpdate(
+        req.params.id,
+        {
+          totalHours: count,
+        },
+        { new: true }
+      );
+      await sendEmail({
+        email: req.body.email,
+        subject: `Clock Status !`,
+        message: "You have Clock In / Clock Out Successfully ! !",
+      });
       res.status(200).json({ message: "Status Updated", updatetotalhours });
       return;
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).json({ message: "Something went Wrong !", error });
   }
 };
@@ -164,7 +176,9 @@ exports.clockInStatus = async (req, res) => {
       return;
     }
     if (statusCLockIn) {
-      res.status(200).json({ message: "User Clocked In, Welcome !", statusCLockIn });
+      res
+        .status(200)
+        .json({ message: "User Clocked In, Welcome !", statusCLockIn });
       return;
     }
   } catch (error) {
@@ -183,9 +197,10 @@ exports.clockOutStatus = async (req, res) => {
       return;
     }
     if (statusCLockOut) {
-      res
-        .status(200)
-        .json({ message: "User Clocked Out, See you Tomorrow !", statusCLockOut });
+      res.status(200).json({
+        message: "User Clocked Out, See you Tomorrow !",
+        statusCLockOut,
+      });
       return;
     }
   } catch (error) {
