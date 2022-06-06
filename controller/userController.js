@@ -239,7 +239,6 @@ exports.addleaves = async (req, res) => {
       sickleave: req.body.sickleave,
     });
     await LeavesData.save();
-
     
       res
         .status(200)
