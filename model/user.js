@@ -37,21 +37,21 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   //lisit of holidays
-  hoildays: {
-    paidLeaves: {
-      type: Number,
-
-    },
-    unPaidLeaves: {
-      type: Number,
-
-    },
-    sickleave: {
-      type: Number
-    },
-  },
-  ClientLocation: {
-    type: String
+  // hoildays: {
+  //   paidLeaves: {
+  //     type: Number,
+      
+  //   },
+  //   unPaidLeaves: {
+  //     type: Number,
+      
+  //   },
+  //   sickleave: {
+  //     type : Number
+  //   },
+  // },
+  ClientLocation : {
+    type : String
   },
   role: {
     type: String,

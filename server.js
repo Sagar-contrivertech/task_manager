@@ -41,6 +41,10 @@ app.use("/api", statusRouter);
 const SprintRouter = require("./Router/SprintRoute");
 app.use("/sprint", SprintRouter);
 
+
+const LeaveApproval = require("./Router/LeaveRequestRoute")
+app.use("/LeaveRequest" , LeaveApproval)
+
 // app.get("/lead" , (req , res) => {
 //     res.json({message : "Hello This is Lead Api Get"});
 // })
