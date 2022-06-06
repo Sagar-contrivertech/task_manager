@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   firstName: {
-    type: String
+    type: String,
   },
   lastName: {
-    type: String
+    type: String,
   },
   email: {
-    type: String
+    type: String,
   },
   password: {
     type: String,
@@ -18,12 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   //chnage according to cludniary
   designation: {
-    public_id: {
-      type: String
-    },
-    url: {
-      type: String
-    }
+    type: String,
   },
   //
   joiningDate: {
@@ -34,34 +29,37 @@ const userSchema = new mongoose.Schema({
     type: Date,
   },
   documents: {
-    type: String,
+    public_id: {
+      type: String,
+    },
+    url: {
+      type: String,
+    },
   },
   //lisit of holidays
   hoildays: {
     paidLeaves: {
       type: Number,
-
     },
     unPaidLeaves: {
       type: Number,
-
     },
     sickleave: {
-      type: Number
+      type: Number,
     },
   },
   ClientLocation: {
-    type: String
+    type: String,
   },
   role: {
     type: String,
-    default: 'Employee'
+    default: "Employee",
   },
   Permissions: {
     type: String,
-    default: 'read'
-  }
+    default: "read",
+  },
   // token: { type: String },
 });
 
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model("User", userSchema);
