@@ -3,6 +3,8 @@ const ProjectLead = require("../model/ProjectLead");
 const Sprint = require("../model/Sprint")
 const user = require("../model/user")
 
+
+//mail
 exports.RegisterSprint = async (req, res) => {
     try {
         const { User, Project, StartDate, EndDate, SprintStatus } = req.body;

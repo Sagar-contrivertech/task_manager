@@ -16,9 +16,16 @@ const userSchema = new mongoose.Schema({
   salary: {
     type: Number,
   },
+  //chnage according to cludniary
   designation: {
-    type: String,
+    public_id: {
+      type: String
+    },
+    url: {
+      type: String
+    }
   },
+  //
   joiningDate: {
     type: Date,
     default: new Date(),
@@ -30,6 +37,7 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   //lisit of holidays
+<<<<<<< HEAD
   // hoildays: {
   //   paidLeaves: {
   //     type: Number,
@@ -45,6 +53,23 @@ const userSchema = new mongoose.Schema({
   // },
   ClientLocation : {
     type : String
+=======
+  hoildays: {
+    paidLeaves: {
+      type: Number,
+
+    },
+    unPaidLeaves: {
+      type: Number,
+
+    },
+    sickleave: {
+      type: Number
+    },
+  },
+  ClientLocation: {
+    type: String
+>>>>>>> c086d04e6e83246c6404bbf04ca32064f114f56b
   },
   role: {
     type: String,

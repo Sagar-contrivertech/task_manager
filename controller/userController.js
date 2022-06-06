@@ -3,10 +3,13 @@ const user = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Leaves = require("../model/leaves")
+//
+const cloudinary = require('cloudinary').v2
+
+const sendEmail = require('../middleware/sendmail')
 
 exports.registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, employeeName, salary, designation, joiningDate, documents,role, Permissions } = req.body;
     const findUsers = await user.findOne({ email: req.body.email });
     if (findUsers) {
       res
@@ -14,11 +17,28 @@ exports.registerUser = async (req, res) => {
         .json({ message: "user with same email already registered" });
       return;
     }
+    // cloundniary for documnets 
+
+    const result = await cloudinary.uploader.upload(req.body.documents, {
+      folder: 'contrivertech_docs',
+      width: 150,
+      crop: "scale"
+    })
+
+    console.log(result)
+
+    //
+    const { firstName, lastName, email, password, employeeName, salary, designation, joiningDate, documents, role, Permissions } = req.body;
+
     const users = await user.create({
       firstName,
       lastName,
       email,
-      password,employeeName, salary, designation, joiningDate, documents,
+      password, employeeName, salary, designation, joiningDate,
+      documents: {
+        public_id: result.public_id,
+        url: result.secure_url
+      },
       role,
       Permissions
     });
@@ -32,8 +52,19 @@ exports.registerUser = async (req, res) => {
       res.status(400).json({ message: "Cannot Create User, try Again !" });
       return;
     }
+
+    const message = `you have been success fully registerd for contrivertech ,`
     if (users) {
       await users.save();
+      // send mail to users while regustrations 
+
+      await sendEmail({
+        email: req.body.email,
+        subject: `you have been succefully registed with contrivertech`,
+        message
+      })
+
+      //
       res.status(200).json({ message: "User Registered !", users, token });
       return;
     }
@@ -77,7 +108,7 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUserById = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, role,Permissions } = req.body;
+    const { firstName, lastName, email, password, role, Permissions } = req.body;
     const users = await user.findById(req.params.id);
     if (!users) {
       res.status(400).json({ message: "User not found !" });
@@ -138,6 +169,8 @@ exports.deleteUserById = async (req, res) => {
   }
 };
 
+
+//mail need to be intgeretd
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
