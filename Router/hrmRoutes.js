@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.post("/hrmcreate", hrmController.hrmReg);
 
-router.get("/hrmget", isAuthenticated, hrmController.hrmGet);
+// router.get("/hrmget", isAuthenticated, hrmController.hrmGet);
+router.get("/hrmget",  hrmController.hrmGet);
 
 router.get("/hrmget/:id", isAuthenticated, hrmController.getHrmId);
 

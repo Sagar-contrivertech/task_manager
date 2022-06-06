@@ -6,17 +6,22 @@ const hrm = new mongoose.Schema({
         ref : "User",
         required : true
     },
+    Leave : {
+        type : mongoose.Schema.ObjectId,
+        ref : "Leaves", 
+        required : true
+    },
     salaryOfMOnth:{
         type : String,
     },
-    hoildays: {
-        paidLeaves: {
-            type : Number,
-        },
-        unPaidLeaves : {
-            type : Number,
-        }
-    },
+    // hoildays: {
+    //     paidLeaves: {
+    //         type : Number,
+    //     },
+    //     unPaidLeaves : {
+    //         type : Number,
+    //     }
+    // },
     monthWorked : {
         type : String,
     },

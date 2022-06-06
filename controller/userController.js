@@ -182,34 +182,53 @@ exports.addleaves = async (req, res) => {
       sickleave: req.body.sickleave,
     });
     await LeavesData.save();
-    let id = LeavesData.name;
-    console.log(LeavesData, "jk");
-    if (LeavesData.name) {
 
-      let ct = await user.findByIdAndUpdate(
-        id,
-        {
-          $push: {
-            "hoildays": {
-              paidLeaves: LeavesData.paidLeaves,
-              unPaidLeaves: LeavesData.unPaidLeaves,
-              sickleave: LeavesData.sickleave,
-              leaves: LeavesData._id,
-            },
-          },
-        },
-        {
-          new: true,
-        }
-      );
-      console.log(ct);
-
+    
       res
         .status(200)
         .json({ message: "leaves for employee added", LeavesData });
-    }
+    // }
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: "someting went wrong !", err });
   }
 };
+
+
+exports.UpdateLeave = async (req, res) => {
+  try {
+    const {name , paidLeaves , unPaidLeaves , sickleave} = req.body;
+
+    const finduserid = await Leaves.findOne({name : name});
+
+    if (!finduserid) {
+      res.status(400).json({message : "User Is Not FOund For This Update Leave"});
+      return
+    }
+    console.log(finduserid)
+    if (finduserid) {
+      // res.status(200).json({message : "User Is FOund For This Update Leave"});
+
+      const LeaveId = await Leaves.findByIdAndUpdate(finduserid._id , {
+        name : name,
+        paidLeaves : paidLeaves ,
+        unPaidLeaves : unPaidLeaves,
+        sickleave : sickleave
+      } , {new : true})
+
+      if (!LeaveId) {
+        res.status(400).json({message : "Leave cannot updated at 2 stage"})
+        return
+      }
+      
+      if (LeaveId) {
+        res.status(200).json({message : "Leave is updated " , LeaveId})
+        return
+      }
+    }
+    
+
+  } catch (error) {
+    res.status(200).json({message : "Leave is not updated " })
+  }
+}

@@ -20,6 +20,7 @@ router.post("/login", userController.login);
 
 
 router.post("/AddLeaves", userController.addleaves);
+router.post("/UpdateLeaves", userController.UpdateLeave);
 
 
 

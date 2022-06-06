@@ -5,102 +5,87 @@ const User = require('../model/user');
 
 exports.hrmReg = async (req, res) => {
   try {
-    const { name, salaryOfMOnth, holiday, monthWorked, workedDays, halfDays } =
-      req.body;
+    const { name, Leave ,salaryOfMOnth, monthWorked, workedDays, halfDays } =req.body;
 
-    const findEmploy = await User.findById(name);
-    console.log(findEmploy)
-    if (!findEmploy) {
-      res.status(400).json({message : "User is not found with this id"});
-      return
-    }
+    // const findEmploy = await User.findById(name);
+    // console.log(findEmploy)
+    // if (!findEmploy) {
+    //   res.status(400).json({message : "User is not found with this id"});
+    //   return
+    // }
     
-    let data;
-    if (findEmploy) {
-      // res.status(200).json({message : "User found with this id" ,findEmploy});
-      // return
-      // let paidLeaves = (findEmploy.hoildays.paidLeaves).toString();
-      // let unPaidLeaves = (findEmploy.hoildays.unPaidLeaves).toString();
-      let pl = findEmploy.hoildays.paidLeaves[0];
-      let ul = findEmploy.hoildays.unPaidLeaves[0];
+    // let data;
+    // if (findEmploy) {
+    //   let pl = findEmploy.hoildays.paidLeaves[0];
+    //   let ul = findEmploy.hoildays.unPaidLeaves[0];
+    //   let {name , monthWorked , holiday} = req.body;
+    //   if (pl === 0) {
+    //     ul = ul + holiday;
+    //     console.log("Unpaidleaves is" + ul)
+    //     const users = await User.findByIdAndUpdate(name , {
+    //       hoildays: {
+    //         paidLeaves: pl,
+    //         unPaidLeaves: ul,
+    //         sickleave : 1
+    //       },
+    //     } , {new : true})
 
-      // console.log(typeof )
-      // console.log(typeof )
-      // console.log(findEmploy.holidays.paidLeaves);
-      // console.log(findEmploy.unPaidLeaves);
-      // console.log("paidleaves and unpaisleaves " + typeof paidLeaves , paidLeaves + typeof unPaidLeaves , unPaidLeaves)
-      // let sickleave = (findEmploy.hoildays.sickleave).toString();
-      
-      // console.log("paidleaves " +  paidLeaves)
-      let {name , monthWorked , holiday} = req.body;
-      // console.log("holidays type " + typeof holiday)
-      if (pl === 0) {
+    //     console.log(users)
+    //     if (!users) {
+    //       res.status(400).json({message : "This is not possible for updating leaves"})
+    //       return
+    //     }
         
-        ul = ul + holiday;
-        console.log("Unpaidleaves is" + unPaidLeaves)
-        const users = await User.findByIdAndUpdate(name , {
-          hoildays: {
-            paidLeaves: pl,
-            unPaidLeaves: ul,
-          },
-        } , {new : true})
+    //     if (users) {
+    //       res.status(400).json({message : "This is possible for updating leaves" , users})
+    //       return 
+    //     }
 
-        console.log(users)
-        if (!users) {
-          res.status(400).json({message : "This is not possible for updating leaves"})
-          return
-        }
+    // }else if(pl > 0){
+    //     pl = pl - holiday;
+
+    //     const users = await User.findByIdAndUpdate(name , {
+    //       hoildays: {
+    //         paidLeaves: pl,
+    //         unPaidLeaves: ul,
+    //         sickleave : 1
+    //       },
+    //     } , {new : true})
+
+    //     console.log(users)
+    //     if (!users) {
+    //       res.status(400).json({message : "This is not possible for updating leaves"})
+    //       return
+    //     }
         
-        if (users) {
-          res.status(400).json({message : "This is possible for updating leaves" , users})
-          return 
-        }
-
-      }else if(pl > 0){
-        pl = pl - holiday;
-      }
-
-        const users = await User.findByIdAndUpdate(name , {
-          hoildays: {
-            paidLeaves: pl,
-            unPaidLeaves: ul,
-          },
-        } , {new : true})
-
-        console.log(users)
-        if (!users) {
-          res.status(400).json({message : "This is not possible for updating leaves"})
-          return
-        }
-        
-        if (users) {
-          res.status(400).json({message : "This is possible for updating leaves" , users})
-          return 
-        }
+    //     if (users) {
+    //       res.status(400).json({message : "This is possible for updating leaves" , users})
+    //       return 
+    //     }
+    //   }
       // console.log(paidLeaves , unPaidLeaves , sickleave)
       // console.log(findEmploy.hoildays.paidLeaves ,findEmploy.hoildays.unPaidLeaves ,  findEmploy.hoildays.sickleave );
       
-      // console.log(salaryOfMOnth, holiday, monthWorked, workedDays, halfDays);
-    // const createHrm = await hrm.create({
-    //   name,
-    //   salaryOfMOnth,
-    //   holiday,
-    //   monthWorked,
-    //   workedDays,
-    //   halfDays,
-    // });
-    // console.log(createHrm)
-    // if (!createHrm) {
-    //   res.status(400).json({ message: "Try Again !" });
-    //   return;
-    // }
-    // if (createHrm) {
+      console.log(name ,salaryOfMOnth, monthWorked, workedDays, halfDays );
+    const createHrm = await hrm.create({
+      name,
+      Leave,
+      salaryOfMOnth,
+      monthWorked,
+      workedDays,
+      halfDays,
+    });
+    console.log(createHrm)
+    if (!createHrm) {
+      res.status(400).json({ message: "Try Again !" });
+      return;
+    }
+    if (createHrm) {
 
-    //   createHrm.save();
-    //   res.status(200).json({ message: "Hrm Created!", createHrm });
-    //   return;
-    // }
-  }
+      createHrm.save();
+      res.status(200).json({ message: "Hrm Created!", createHrm });
+      return;
+    }
 
   } catch (error) {
     console.log(error);
@@ -111,7 +96,7 @@ exports.hrmReg = async (req, res) => {
 
 exports.hrmGet = async (req, res) => {
   try {
-    const getHrm = hrm.find();
+    const getHrm = await hrm.find().populate("Leave").populate("name");
     if (!getHrm) {
       res.status(400).json({ message: "Try Again !" });
       return;
