@@ -3,12 +3,14 @@ const user = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Leaves = require("../model/leaves");
+//async error  handling
+const catchAsyncErrors = require('../utlis/catchAsyncErrors')
 //
 const cloudinary = require("cloudinary");
 
 const sendEmail = require("../middleware/sendmail");
 
-exports.registerUser = async (req, res) => {
+exports.registerUser = catchAsyncErrors(async (req, res) => {
   try {
     const findUsers = await user.findOne({ email: req.body.email });
     if (findUsers) {
@@ -93,7 +95,7 @@ exports.registerUser = async (req, res) => {
     res.status(400).json({ message: "Something Went Wrong !", error });
     console.log(error);
   }
-};
+});
 
 exports.getUser = async (req, res) => {
   try {
@@ -239,10 +241,18 @@ exports.addleaves = async (req, res) => {
       sickleave: req.body.sickleave,
     });
     await LeavesData.save();
+<<<<<<< HEAD
     
       res
         .status(200)
         .json({ message: "leaves for employee added", LeavesData });
+=======
+
+
+    res
+      .status(200)
+      .json({ message: "leaves for employee added", LeavesData });
+>>>>>>> 895412227f04b0db0c02563c07d426afcd0eec3a
     // }
   } catch (err) {
     console.log(err);
@@ -253,38 +263,38 @@ exports.addleaves = async (req, res) => {
 
 exports.UpdateLeave = async (req, res) => {
   try {
-    const {name , paidLeaves , unPaidLeaves , sickleave} = req.body;
+    const { name, paidLeaves, unPaidLeaves, sickleave } = req.body;
 
-    const finduserid = await Leaves.findOne({name : name});
+    const finduserid = await Leaves.findOne({ name: name });
 
     if (!finduserid) {
-      res.status(400).json({message : "User Is Not FOund For This Update Leave"});
+      res.status(400).json({ message: "User Is Not FOund For This Update Leave" });
       return
     }
     console.log(finduserid)
     if (finduserid) {
       // res.status(200).json({message : "User Is FOund For This Update Leave"});
 
-      const LeaveId = await Leaves.findByIdAndUpdate(finduserid._id , {
-        name : name,
-        paidLeaves : paidLeaves ,
-        unPaidLeaves : unPaidLeaves,
-        sickleave : sickleave
-      } , {new : true})
+      const LeaveId = await Leaves.findByIdAndUpdate(finduserid._id, {
+        name: name,
+        paidLeaves: paidLeaves,
+        unPaidLeaves: unPaidLeaves,
+        sickleave: sickleave
+      }, { new: true })
 
       if (!LeaveId) {
-        res.status(400).json({message : "Leave cannot updated at 2 stage"})
+        res.status(400).json({ message: "Leave cannot updated at 2 stage" })
         return
       }
-      
+
       if (LeaveId) {
-        res.status(200).json({message : "Leave is updated " , LeaveId})
+        res.status(200).json({ message: "Leave is updated ", LeaveId })
         return
       }
     }
-    
+
 
   } catch (error) {
-    res.status(200).json({message : "Leave is not updated " })
+    res.status(200).json({ message: "Leave is not updated " })
   }
 }

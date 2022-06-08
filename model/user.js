@@ -36,6 +36,11 @@ const userSchema = new mongoose.Schema({
       type: String,
     },
   },
+  Leaves:{
+    type:mongoose.Schema.ObjectId,
+    ref:"Leaves"
+  }
+,
   //lisit of holidays
   // hoildays: {
   //   paidLeaves: {
