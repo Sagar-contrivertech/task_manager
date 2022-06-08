@@ -241,18 +241,10 @@ exports.addleaves = async (req, res) => {
       sickleave: req.body.sickleave,
     });
     await LeavesData.save();
-<<<<<<< HEAD
     
       res
         .status(200)
         .json({ message: "leaves for employee added", LeavesData });
-=======
-
-
-    res
-      .status(200)
-      .json({ message: "leaves for employee added", LeavesData });
->>>>>>> 895412227f04b0db0c02563c07d426afcd0eec3a
     // }
   } catch (err) {
     console.log(err);
