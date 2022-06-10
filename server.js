@@ -21,6 +21,15 @@ cloudinary.config({
 
 //
 
+const cors=require("cors");
+const corsOptions ={
+   origin:'*', 
+   credentials:true,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
+}
+
+app.use(cors(corsOptions)) 
+
 // initializing that this project send the json data
 app.use(express.json());
 
