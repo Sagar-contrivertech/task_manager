@@ -21,16 +21,18 @@ exports.registerUser = (async (req, res) => {
       return;
     }
     // cloundniary for documnets
-
-    const result = await cloudinary.v2.uploader.upload(
-      req.body.documents,
-      {
-        folder: "pdf",
-      },
-      function (error, result) {
-        console.log(result, error);
-      }
-    );
+    if (req.body.documents) {
+      
+      const result = await cloudinary.v2.uploader.upload(
+        req.body.documents,
+        {
+          folder: "pdf",
+        },
+        function (error, result) {
+          console.log(result, error);
+        }
+        );
+    }
 
     // console.log(result);
 
@@ -48,9 +50,27 @@ exports.registerUser = (async (req, res) => {
       role,
       Permissions,
     } = req.body;
-
-    const users = await user.create({
-      firstName,
+    if (req.body.documents) {
+      
+        const users = await user.create({
+          firstName,
+        lastName,
+        email,
+        password,
+        employeeName,
+        salary,
+        designation,
+        joiningDate,
+        documents: {
+          public_id: result.public_id,
+          url: result.secure_url,
+        },
+        role,
+        Permissions,
+      });
+    }else{
+      const users = await user.create({
+        firstName,
       lastName,
       email,
       password,
@@ -58,13 +78,10 @@ exports.registerUser = (async (req, res) => {
       salary,
       designation,
       joiningDate,
-      documents: {
-        public_id: result.public_id,
-        url: result.secure_url,
-      },
       role,
       Permissions,
     });
+    
     const salt = await bcrypt.genSalt(10);
     users.password = await bcrypt.hash(users.password, salt);
     const token = jwt.sign({ id: users.id }, process.env.tokenKey, {
@@ -91,6 +108,7 @@ exports.registerUser = (async (req, res) => {
       //
       res.status(200).json({ message: "User Registered !", users, token });
       return;
+    }
     }
   } catch (error) {
     res.status(400).json({ message: "Something Went Wrong !", error });
