@@ -15,4 +15,6 @@ router.put("/hrmupdate/:id", isAuthenticated, hrmController.updateHrm);
 
 router.delete("/hrmdelete/:id", isAuthenticated, hrmController.deleteHrm);
 
+router.post("/hrmupdatesalary",hrmController.PostSalary);
+
 module.exports = router;

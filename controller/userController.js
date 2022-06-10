@@ -4,14 +4,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Leaves = require("../model/leaves");
 //async error  handling
-const catchAsyncErrors = require('../utlis/catchAsyncErrors')
+// const catchAsyncErrors = require('../utlis/catchAsyncErrors')
 //
 const cloudinary = require("cloudinary");
 
 const sendEmail = require("../middleware/sendmail");
 
-exports.registerUser = catchAsyncErrors(async (req, res) => {
+exports.registerUser = (async (req, res) => {
   try {
+    console.log(req.body)
     const findUsers = await user.findOne({ email: req.body.email });
     if (findUsers) {
       res
