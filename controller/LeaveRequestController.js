@@ -4,10 +4,10 @@ const Leaves = require("../model/leaves")
 
 exports.ApplyForLeave = async (req, res) => {
     try {
-        const { LeaveId, LeaveDesc, LeaveCount, LeaveApproval } = req.body;
+        const { LeaveId, UserId , LeaveDesc, LeaveCount, LeaveApproval } = req.body;
 
         const LRequest = await LeaveRequest.create({
-            LeaveId: LeaveId, LeaveDesc: LeaveDesc, LeaveCount: LeaveCount, LeaveApproval: LeaveApproval
+            LeaveId: LeaveId, UserId : UserId  , LeaveDesc: LeaveDesc, LeaveCount: LeaveCount, LeaveApproval: LeaveApproval
         })
 
         if (!LRequest) {
@@ -46,7 +46,7 @@ exports.GetAllLeaveRequet = async (req, res) => {
 
 exports.UpdateLeaveRequet = async (req, res) => {
     try {
-        const { LeaveId, LeaveDesc, LeaveCount, LeaveApproval } = req.body;
+        const { LeaveId, UserId , LeaveDesc, LeaveCount, LeaveApproval } = req.body;
         const findLeaveid = await Leaves.findById(LeaveId);
 
         if (!findLeaveid) {
@@ -109,18 +109,41 @@ exports.approved = async (req, res) => {
         const approvedReq = await LeaveRequest.findByIdAndUpdate(req.params.id, {
             LeaveApproval: req.body.LeaveApproval
         }, { new: true })
+        console.log(approvedReq)
         if (approvedReq) {
-            
-            const findData = await Leaves.findById(req.body.id)
+
+            // caculation leave 
+            let total = approvedReq.LeaveCount.paidLeaves;
+            let subtotal;
+            if (total > 4) {
+                subtotal = approvedReq.LeaveCount.paidLeaves - 4;
+                approvedReq.LeaveCount.unPaidLeaves = approvedReq.LeaveCount.unPaidLeaves - subtotal;
+            } else {
+                total = total-req.body.paidLeaves;
+                subtotal = 0;
+            }
+            // caculation leave 
+
+            console.log("Leave calculation total is " + total + "subtotal" + subtotal)
+
+            const findData = await Leaves.findById(approvedReq.LeaveId)
+            console.log(findData)
             if (findData) {
-                const updateLeave = await Leaves.findByIdAndUpdate(req.body.id,{
-                    LeaveCount
-                })
+                const updateLeave = await LeaveRequest.findByIdAndUpdate(req.params.id,{
+                    LeaveCount : {
+                        paidLeaves : total,
+                        unPaidLeaves : subtotal,
+                        sickleave : 0
+                    }
+                }, {new : true})
+                // console.log("update leave");
+                // console.log(updateLeave);
+                res.status(200).json({ message: "leave approval", updateLeave })
+                return;
             }
 
-            res.status(200).json({ message: "leave approval", approvedReq })
-            return;
         }
+
         res.status(400).json({ message: "cannot Leave approval " })
     } catch (error) {
         console.log(error)

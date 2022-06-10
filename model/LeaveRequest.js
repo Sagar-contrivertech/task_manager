@@ -6,6 +6,11 @@ const LeaveRequest = mongoose.Schema({
         ref : "Leaves",
         required : true
     },
+    UserId : {
+        type : mongoose.Schema.ObjectId,
+        ref : "User",
+        required : true
+    },
     LeaveDesc : {
         type : String,
         required : true

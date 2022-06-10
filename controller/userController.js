@@ -4,14 +4,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Leaves = require("../model/leaves");
 //async error  handling
-const catchAsyncErrors = require('../utlis/catchAsyncErrors')
+// const catchAsyncErrors = require('../utlis/catchAsyncErrors')
 //
 const cloudinary = require("cloudinary");
 
 const sendEmail = require("../middleware/sendmail");
 
-exports.registerUser = catchAsyncErrors(async (req, res) => {
+exports.registerUser = (async (req, res) => {
   try {
+    console.log(req.body)
     const findUsers = await user.findOne({ email: req.body.email });
     if (findUsers) {
       res
@@ -241,11 +242,10 @@ exports.addleaves = async (req, res) => {
       sickleave: req.body.sickleave,
     });
     await LeavesData.save();
-
-
-    res
-      .status(200)
-      .json({ message: "leaves for employee added", LeavesData });
+    
+      res
+        .status(200)
+        .json({ message: "leaves for employee added", LeavesData });
     // }
   } catch (err) {
     console.log(err);
